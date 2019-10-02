@@ -1,2 +1,2 @@
-# Webpack-Start-Tempalte (На стадии разаботки!)
+# Webpack-Start-Tempalte (На стадии разработки!)
 Стартовый шаблон для разработки SPA.
