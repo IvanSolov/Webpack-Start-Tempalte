@@ -2,6 +2,7 @@ const path = require('path')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 const PATHS = {
    // Path to main app dir
@@ -16,7 +17,7 @@ module.exports = {
    },
 
    entry: {
-      app: PATHS.src
+      app: PATHS.src + '/js'
    },
 
    output: {
@@ -29,27 +30,43 @@ module.exports = {
       overlay: true
    },
 
+   resolve: {
+      alias: {
+        'vue$': 'vue/dist/vue.esm.js'
+      },
+      extensions: ['*', '.js', '.vue', '.json']
+    },
+
    module: {
       rules: [
          {
-               test: /\.js$/,
-               loader: 'babel-loader',
-               exclude: '/node_modules'
+            test: /\.js$/,
+            loader: 'babel-loader',
+            exclude: '/node_modules'
          },
          {
-               test: /\.scss$/,
-               use: [
-                  MiniCssExtractPlugin.loader,
-                  {
-                     loader: 'css-loader',
-                     options: { sourceMap: true }
-                  },
-                  'postcss-loader',
-                  {
-                     loader: 'sass-loader',
-                     options: { sourceMap: true }
-                  },
-               ],
+            test: /\.vue$/,
+            loader: 'vue-loader',
+            options: {
+               loader: {
+                 scss: 'vue-style-loader!css-loader!sass-loader'
+               }
+             }
+         },
+         {
+            test: /\.scss$/,
+            use: [
+               MiniCssExtractPlugin.loader,
+               {
+                  loader: 'css-loader',
+                  options: { sourceMap: true }
+               },
+               'postcss-loader',
+               {
+                  loader: 'sass-loader',
+                  options: { sourceMap: true }
+               },
+            ],
          },
          {
             test: /\.(png|jpg|gif|svg)$/,
@@ -62,6 +79,8 @@ module.exports = {
    },
 
    plugins: [
+      new VueLoaderPlugin(),
+
       new MiniCssExtractPlugin({
          filename: `css/[name].css`
       }),
