@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "webpack-dev-server --config webpack.dev.conf.js",
     "build": "webpack --config webpack.build.conf.js",
-    "lint": "eslint src/**/*.{js,vue}"
+    "lint": "eslint src/**/*.{js,vue} --fix"
   },
   "author": "IvanSolov",
   "license": "ISC",
