@@ -17,28 +17,39 @@ module.exports = {
    },
 
    entry: {
-      app: PATHS.src + '/js'
+      app: [PATHS.src + '/main.js']
    },
 
    output: {
-      filename: `js/[name].js`,
+      filename: `js/[name].[hash].js`,
       path: PATHS.dist,
       publicPath: ''
    },
 
-   devServer: {
-      overlay: true
+   optimization: {
+      splitChunks: {
+         cacheGroups: {
+            vendor: {
+               name: 'vendors',
+               test: /node_modules/,
+               chunks: 'all',
+               enforce: true
+            }
+         }
+      }
    },
 
    resolve: {
       alias: {
-        'vue$': 'vue/dist/vue.esm.js'
+         '@': 'src',
+         'vue$': 'vue/dist/vue.esm.js'
       },
       extensions: ['*', '.js', '.vue', '.json']
     },
 
    module: {
       rules: [
+
          {
             test: /\.js$/,
             loader: 'babel-loader',
@@ -74,6 +85,13 @@ module.exports = {
             options: {
                name: '[name].[ext]',
             },
+         },
+         {
+            test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+            loader: 'file-loader',
+            options: {
+               name: '[name].[ext]',
+            },
          }
       ]
    },
@@ -82,11 +100,12 @@ module.exports = {
       new VueLoaderPlugin(),
 
       new MiniCssExtractPlugin({
-         filename: `css/[name].css`
+         filename: `css/[name].[hash].css`
       }),
 
       new CopyWebpackPlugin([
-         {from: PATHS.src + '/img', to: 'img'},
+         {from: PATHS.src + '/assets/img', to: 'img'},
+         {from: PATHS.src + '/assets/fonts', to: 'fonts'},
          {from: PATHS.src + '/static', to: ''},
       ]),
 

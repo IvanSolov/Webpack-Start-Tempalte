@@ -1,5 +1,4 @@
-import './module'
-import '../scss/index.scss'
+// import './module'
 
 import Vue from 'vue'
 import store from './store'

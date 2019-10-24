@@ -6,7 +6,19 @@ const devWebpackConfig = merge(baseWebpackConfig, {
    mode: 'development',
 
    devtool: 'cheap-module-eval-source-map',
-   
+
+   module: {
+      rules: [
+         // For lint on save
+         // {
+         //    enforce: 'pre',
+         //    test: /\.(js|vue)$/,
+         //    use: 'eslint-loader',
+         //    exclude: /node_modules/
+         // }
+      ]
+   },
+
    plugins: [
       new webpack.SourceMapDevToolPlugin({
          filename: "[file].map"
